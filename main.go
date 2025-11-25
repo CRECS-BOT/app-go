@@ -13,7 +13,7 @@ func apiHandler(w http.ResponseWriter, r *http.Request) {
 	// esempio: semplice JSON
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	_, _ = w.Write([]byte(`{"status":"ok","message":"API alive"}`))
+	_, _ = w.Write([]byte(`{"status":"ok","message":"API alive OK ;)"}`))
 }
 
 // handler per /telegram (dummy, solo 200 OK)
