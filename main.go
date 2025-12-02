@@ -50,7 +50,7 @@ func main() {
 	// Serve i file dentro ./webapp quando la URL inizia con /webapp
 	webappDir := http.Dir("webapp")
 	webappFS := http.StripPrefix("/webapp", http.FileServer(webappDir))
-	mux.Handle("/webapp/", webappFS)
+	mux.Handle("/webapp", webappFS)
 
 	addr := fmt.Sprintf(":%d", *port)
 	log.Printf("Server starting on %s\n", addr)
