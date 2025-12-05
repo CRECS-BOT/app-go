@@ -78,7 +78,7 @@ func main() {
 	// --- ROUTA TELEGRAM WEBHOOK ---
 	mux.HandleFunc("/telegram", telegramHandler)
 
-	mux.HandleFunc("/telegramWebHook", telegramWebHookHandler)
+	mux.HandleFunc("/bot", telegramWebHookHandler)
 	// o /telegram/webhook se vuoi qualcosa di più specifico
 	// mux.HandleFunc("/telegram/webhook", telegramHandler)
 
