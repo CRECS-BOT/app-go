@@ -49,8 +49,15 @@ func main() {
 	// --- STATICI WEBAPP su /webapp ---
 	// Serve i file dentro ./webapp quando la URL inizia con /webapp
 	webappDir := http.Dir("webapp")
-	webappFS := http.StripPrefix("/webapp", http.FileServer(webappDir))
-	mux.Handle("/webapp", webappFS)
+
+	// 1) Redirect /webapp -> /webapp/
+	mux.HandleFunc("/webapp", func(w http.ResponseWriter, r *http.Request) {
+		http.Redirect(w, r, "/webapp/", http.StatusMovedPermanently)
+	})
+
+	// 2) Serve tutto sotto /webapp/
+	webappFS := http.StripPrefix("/webapp/", http.FileServer(webappDir))
+	mux.Handle("/webapp/", webappFS)
 
 	addr := fmt.Sprintf(":%d", *port)
 	log.Printf("Server starting on %s\n", addr)
