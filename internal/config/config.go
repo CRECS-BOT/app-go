@@ -59,3 +59,8 @@ func MustLoadFromEnv() Config {
 		RedisDB:       getIntOpt("REDIS_DB", 0),
 	}
 }
+
+
+func (cfg Config) PrintConfig() {
+	log.Printf("Config: %+v", cfg)
+}

@@ -28,6 +28,8 @@ func main() {
 	flag.Parse()
 
 	cfg := config.MustLoadFromEnv()
+	cfg.PrintConfig()
+
 
 	// Init Mongo + Redis (shared across replicas -> OK for k8s)
 	db.MustInitMongo(cfg.MongoURI, cfg.MongoDB)
