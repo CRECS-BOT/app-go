@@ -25,7 +25,7 @@ func MustNewService(cfg config.Config) *Service {
 		tgbot.WithWorkers(cfg.BotWorkers),
 		tgbot.WithMiddlewares(
 			LoggingMiddleware(),
-			RateLimitMiddleware(), // uses Redis
+			//RateLimitMiddleware(), // uses Redis
 		),
 	}
 
