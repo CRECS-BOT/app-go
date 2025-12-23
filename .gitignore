@@ -3,3 +3,5 @@ webapp/
 website/
 
 .env
+
+app-go
