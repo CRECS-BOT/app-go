@@ -23,6 +23,28 @@ func apiHandler(w http.ResponseWriter, r *http.Request) {
 	_, _ = w.Write([]byte(`{"status":"ok","message":"API alive OK ;)"}`))
 }
 
+func botSetWebHook(w http.ResponseWriter, r *http.Request, cfg config.Config) {
+	_, err := http.Get(fmt.Sprintf("https://api.telegram.org/bot%s/setWebhook?url=%s&secret_token=%s",
+        cfg.TelegramToken, "https://crecs-bot.it/telegram", cfg.TelegramWebhookSecret))
+    if err != nil {
+        http.Error(w, "Failed to set webhook", http.StatusInternalServerError)
+        return
+    }
+
+    w.Write([]byte("Webhook set successfully"))
+}
+
+func botDeleteWebHook(w http.ResponseWriter, r *http.Request, cfg config.Config) {
+	// Chiamata per eliminare il webhook
+    _, err := http.Get(fmt.Sprintf("https://api.telegram.org/bot%s/deleteWebhook", cfg.TelegramToken))
+    if err != nil {
+        http.Error(w, "Failed to delete webhook", http.StatusInternalServerError)
+        return
+    }
+
+    w.Write([]byte("Webhook deleted successfully"))
+}
+
 func main() {
 	port := flag.Int("port", 8080, "Porta HTTP su cui avviare il server")
 	flag.Parse()
@@ -45,6 +67,12 @@ func main() {
 	mux.HandleFunc("/api", apiHandler)
 
 	// Telegram webhook endpoint (IMPORTANT: this must match webhook url)
+	mux.HandleFunc("/setwebhook", func(w http.ResponseWriter, r *http.Request) {
+		botSetWebHook(w, r, cfg)
+	})
+	mux.HandleFunc("/deletewebhook", func(w http.ResponseWriter, r *http.Request) {
+		botDeleteWebHook(w, r, cfg)
+	})
 	mux.Handle("/telegram", botSvc.WebhookHandler())
 
 	// static website on /
