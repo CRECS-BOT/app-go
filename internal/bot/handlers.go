@@ -18,12 +18,23 @@ func (d *Dispatcher) HandleStart(ctx context.Context, b *tgbot.Bot, upd *models.
 
 	_, _ = db.UpsertUserBasic(m.From.ID, m.From.Username, m.From.FirstName)
 
-	txt := "Ciao! 👋\n" +
-		"Comandi:\n" +
-		"/help\n" +
-		"/register (flusso multi-step)\n" +
-		"/cancel"
-	_, _ = b.SendMessage(ctx, &tgbot.SendMessageParams{ChatID: m.Chat.ID, Text: txt})
+	txt := "👋 Benvenuto su CRECS-BOT\n" +
+		"🎯 Il modo più semplice per creare abbonamenti e condividere contenuti esclusivi su Telegram.\n\n" +
+		"Scegli come vuoi iniziare 👇\n"
+
+	kb := &models.InlineKeyboardMarkup{
+		InlineKeyboard: [][]models.InlineKeyboardButton{
+			{
+				{ Text: "👤 Entra come Fan", CallbackData: "button_1" },
+				{ Text: "🧑‍🏫 Entra come Creator", CallbackData: "button_2" },
+				{ Text: "ℹ️ Come funziona", CallbackData: "button_2" },
+				{ Text: "🌍 Lingua", CallbackData: "button_2" },
+				{ Text: "🛟 Supporto", CallbackData: "button_2" },
+			},
+		},
+	}
+
+	_, _ = b.SendMessage(ctx, &tgbot.SendMessageParams{ChatID: m.Chat.ID, Text: txt, ReplyMarkup: kb})
 }
 
 func (d *Dispatcher) HandleHelp(ctx context.Context, b *tgbot.Bot, upd *models.Update) {
